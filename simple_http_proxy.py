@@ -17,6 +17,13 @@ import time
 def debug(tag, msg):
     print('[%s] %s' % (tag, msg))
 
+def to_str(x, encoding='utf-8', errors='strict'):
+    if x is None or isinstance(x, str):
+        return x
+    if isinstance(x, bytes):
+        return x.decode(encoding, errors)
+    return str(x)
+
 class HttpRequestPacket(object):
     '''
     HTTP请求包
@@ -111,6 +118,8 @@ class SimpleHttpProxy(object):
 
         # 解析http请求数据
         http_packet = HttpRequestPacket(req_data)
+
+        debug('proxy', to_str(http_packet.req_line))
 
         # 获取服务端host、port
         if b':' in http_packet.host:
